@@ -15,22 +15,23 @@ const client = createClient();
 
 const prisma = new PrismaClient();
 
-(async () => {
+(async () => { //when the backend starts the redis connection is done not like whenevr the request is made to /submit it connects
     try {
         await client.connect(); //connnect to redis client once
         console.log("redis client connected!!")    
     } catch (error) {
         console.error("error occured connecting to redis : " , error);
     }
-})();
+})(); //if we connect the redis to the /submit that is when each request comes then after the first request the message will be not
+//uploaded to the redis queue as the conncection will be disconnected
 
 app.post('/submit' , async (req , res) => {
     const {problemId , language ,  code } = req.body;
-    console.log("body is" , problemId,language,code);
+    //console.log("body is" , problemId,language,code);
     try {
-        console.log("control reached route /submit");
+        //console.log("control reached route /submit");
         //store the probelm in the database as the status as unchecked
-        const problem = await prisma.problem.create({
+        await prisma.problem.create({
             data : {
                 id : problemId,
                 language : language,

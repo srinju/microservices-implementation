@@ -16,7 +16,7 @@ const submissionClients = new Map(); //map to store each ws client with a partic
 //if no create the map then . supppose i submitted a porblem and saw satus as checked then the other client will also see status checked without even submitting a problem
 
 //main operation >
-(async () => {
+(async () => { //when the server starts it subscribes to the pubsub
     try{
         //connect to redis
         await client.connect();
@@ -54,15 +54,15 @@ wss.on('connection' ,async function conncection(socket){
 
    //handle client message to register submission id
    socket.on('message' , (data) => {
-    console.log("the data is wihtout converting into string : ",data);
+    //console.log("the data is wihtout converting into string : ",data);
     const messageString = data.toString(); //we are converting the data to string as ts complains as the message received from the redis pubsub channel can be either string arraybuffer buffer 
-    console.log("the message string is : ",messageString);
+    //console.log("the message string is : ",messageString);
     const {submissionId} = JSON.parse(messageString); 
-    console.log("submission id is  : ",submissionId);
+    //console.log("submission id is  : ",submissionId);
     if(submissionId){
         //associate the ws with a the submissionId
-        console.log("socket : " , socket);
-        submissionClients.set(submissionId,socket);
+        //console.log("socket : " , socket);
+        submissionClients.set(submissionId,socket); //setting the submissionId with a socket connection
         console.log(`web socket connection established for the submijssion id ${submissionId}`);
     }
    });

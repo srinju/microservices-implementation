@@ -20,11 +20,10 @@ function App() {
     ws.onmessage = (message) => {
       //whenever there is a message >
       try {
-        console.log("the message is : ",message);
+        //console.log("the message is : ",message);
         const data = JSON.parse(message.data); //parse the message from the ws server
-        console.log('message received is : ' , data);
-        //check if the submissionId of the data is = to the submissionId that is being submitted>
-        if(data.id === submissionId){
+        //console.log('message received is : ' , data);
+        if(data.id === submissionId){  //check if the submissionId of the data is = to the submissionId that is being submitted>
           setStatus(data.status); //set the status as received from the ws server
         }
       } catch (error) {

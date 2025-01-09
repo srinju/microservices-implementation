@@ -4,6 +4,7 @@
 //then the pub sub stores in db that the probelm was checked and ws server subscribes with the pubsub and returns the status of the probelm to the user
 //we are just simulating a compiler here
 //this mother fucker 
+//generally here will be a compiler machine which compiles the code and gives the test cases results to the pubsub
 
 import { createClient } from "redis";
 import express from 'express';
@@ -18,15 +19,15 @@ async function runWorker() {
     
     await client.connect(); //connect to the redis client
     while(true){
-        const response = await client.brPop("submissions" , 0); //brpop 0 from the queue
+        const response = await client.brPop("submissions" , 0); //brpop 0 from the queue --> take the payload from the redis queuue
         if(!response){
             console.log('no response');
             return;
         }
-        console.log("the unarsed response is : ",response);
+        //console.log("the unparsed response is : ",response);
         const parsedResponse = JSON.parse(response.element);
-        console.log("parsed response id is : " , parsedResponse.problemId);
-        console.log("parsed resonse payload : ",parsedResponse);
+        //console.log("parsed response id is : " , parsedResponse.problemId);
+        //console.log("parsed resonse payload : ",parsedResponse);
         try {
             //simulate the code check >
             const updatedSubmission = await prisma.problem.update({
